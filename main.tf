@@ -29,7 +29,7 @@ resource "azurerm_key_vault" "example" {
       "get",
     ]
   }
-
+}
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"

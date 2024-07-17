@@ -3,40 +3,6 @@ resource "azurerm_resource_group" "myterraformgroup" {
   location = "East US"
 }
 
-resource "azuread_service_principal" "example" {
-  application_id               = azuread_application.example.application_id
-  app_role_assignment_required = false
-
-  tags = ["example", "tags", "here"]
-}
-resource "azurerm_key_vault" "example" {
-  name                        = "testvault"
-  location                    = azurerm_resource_group.example.location
-  resource_group_name         = azurerm_resource_group.example.name
-  enabled_for_disk_encryption = true
-  tenant_id                   = var.tenant_id
-  soft_delete_enabled         = true
-  purge_protection_enabled    = false
-
-  sku_name = "standard"
-
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = azuread_service_principal.example.object_id
-
-    key_permissions = [
-      "get",
-    ]
-
-    secret_permissions = [
-      "get",
-    ]
-
-    storage_permissions = [
-      "get",
-    ]
-  }
-}
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"

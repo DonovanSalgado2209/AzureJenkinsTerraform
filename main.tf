@@ -2,9 +2,6 @@ resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "East US"
 }
-data "azurerm_subscription" "primary" {
-}
-
 data "azurerm_client_config" "example" {
 }
 resource "azurerm_role_assignment" "example" {

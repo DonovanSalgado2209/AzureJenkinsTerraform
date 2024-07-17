@@ -1,31 +1,31 @@
 resource "azurerm_resource_group" "myterraformgroup" {
-  name     = "VM"
+  name     = "myResourceGroup"
   location = "East US"
 }
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
-  name                   = "AzureJenkinsTerraform-vnet"
-  address_space          = ["10.1.0.0/16"]
+  name                   = "myVnet"
+  address_space          = ["10.0.0.0/16"]
   location               = "East US"
   resource_group_name    = azurerm_resource_group.myterraformgroup.name
 }
 
 resource "azurerm_subnet" "myterraformsubnet" {
-  name                    = "default"
+  name                    = "mySubnet"
   resource_group_name     = azurerm_resource_group.myterraformgroup.name
   virtual_network_name    = azurerm_virtual_network.myterraformnetwork.name
-  address_prefixes        = ["10.1.0.0/24"]
+  address_prefixes        = ["10.0.1.0/24"]
 }
 
 resource "azurerm_public_ip" "myterraformpublicip" {
-  name                    = "ipconfig1"
+  name                    = "myPublicIP"
   location                = "East US"
   resource_group_name     = azurerm_resource_group.myterraformgroup.name
   allocation_method       = "Static"
 }
 
 resource "azurerm_network_security_group" "myterraformnsg" {
-  name                   = "AzureJenkinsTerraform-nsg"
+  name                   = "myNetworkSecurityGroup"
   location               = "East US"
   resource_group_name    = azurerm_resource_group.myterraformgroup.name
 
@@ -43,12 +43,12 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 }
 
   resource "azurerm_network_interface" "myterraformnic" {
-    name                   = "azurejenkinsterraform176_z1"
+    name                   = "myNIC"
     location               = "East US"
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
 
     ip_configuration {
-      name                              = "ipconfig1"
+      name                              = "myNicConfig"
       subnet_id                         = azurerm_subnet.myterraformsubnet.id
       private_ip_address_allocation     = "Dynamic"
       public_ip_address_id              = azurerm_public_ip.myterraformpublicip.id
@@ -61,7 +61,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
   }
 
   resource "azurerm_linux_virtual_machine" "myterraformmvm" {
-    name                   = "AzureJenkinsTerraform"
+    name                   = "myVM"
     location               = "East US"
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
     network_interface_ids  = [azurerm_network_interface.myterraformnic.id]
@@ -81,7 +81,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     }
 
     computer_name                    = "myvm"
-    admin_username                   = "dono"
+    admin_username                   = "donovis"
     admin_password                   = "Donovansalazar22"
     disable_password_authentication  = false
   }

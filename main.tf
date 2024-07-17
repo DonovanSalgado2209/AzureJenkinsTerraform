@@ -86,3 +86,22 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     admin_password                   = "Donovansalazar22"
     disable_password_authentication  = false
   }
+resource "azuread_group" "this"{
+  count = length(var.ad_groups)
+  display_name =  var.ad_groups[count.index].display_name
+  description = var.ad_groups[count.index].description
+  security_enabled = true
+  # prevent_duplicate_names = true  
+  owners  = [data.azuread_client_config.current.object_id]
+}
+
+resource "azurerm_role_assignment" "sp-tenant-global-admin-user-access-role-assignment" {
+  count = length(var.ad_groups)
+  scope                ="/subscriptions/xxx/resourcegroups/myrg"     
+  role_definition_name = var.ad_groups[count.index].role
+  principal_id         = azuread_group.this[count.index].object_id
+
+  depends_on = [
+    azuread_group.this
+  ]  
+}

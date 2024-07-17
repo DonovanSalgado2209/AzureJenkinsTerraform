@@ -2,6 +2,13 @@ resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "East US"
 }
+
+resource "azuread_service_principal" "example" {
+  application_id               = azuread_application.example.application_id
+  app_role_assignment_required = false
+
+  tags = ["example", "tags", "here"]
+}
 resource "azurerm_key_vault" "example" {
   name                        = "testvault"
   location                    = azurerm_resource_group.example.location

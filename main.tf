@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "East US"
-
+}
 resource "azurerm_key_vault" "example" {
   name                        = "testvault"
   location                    = azurerm_resource_group.example.location

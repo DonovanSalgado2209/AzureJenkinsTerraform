@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "myterraformgroup" {
-  name     = "myResourceGroup"
+  name     = "VM"
   location = "East US"
 }
 

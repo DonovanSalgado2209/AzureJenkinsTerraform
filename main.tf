@@ -63,7 +63,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
   resource "azurerm_linux_virtual_machine" "myterraformmvm" {
     name                   = "AzureJenkinsTerraform"
     location               = "East US"
-    resource_group_name    = azurerm_resource_group.myterraform.name
+    resource_group_name    = azurerm_resource_group.myterraformgroup.name
     network_interface_ids  = [azurerm_network_interface.myterraformnic.id]
     size                   = "Standard_DS1_v2"
 

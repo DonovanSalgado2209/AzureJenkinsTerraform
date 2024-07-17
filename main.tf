@@ -1,14 +1,25 @@
 resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "East US"
+
+access_policy {
+    tenant_id = var.tenant_id
+    object_id = azuread_service_principal.example.object_id
+
+    key_permissions = [
+      "get",
+    ]
+
+    secret_permissions = [
+      "get",
+    ]
+
+    storage_permissions = [
+      "get",
+    ]
+  }
 }
-data "azurerm_client_config" "example" {
-}
-resource "azurerm_role_assignment" "example" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Reader"
-  principal_id         = data.azurerm_client_config.example.object_id
-}
+
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"
   address_space          = ["10.0.0.0/16"]

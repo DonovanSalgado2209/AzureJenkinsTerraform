@@ -1,7 +1,6 @@
 resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "SouthIndia"
-  use_azuread_auth = true
 }
 
 

@@ -80,7 +80,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
       version   = "latest"
     }
 
-    computer_name                    = "Dono's Virtual Machine"
+    computer_name                    = "DonosVirtualMachine"
     admin_username                   = "donovis"
     admin_password                   = "Dono22"
     disable_password_authentication  = false

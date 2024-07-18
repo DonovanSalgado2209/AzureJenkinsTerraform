@@ -2,7 +2,12 @@ resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
   location = "SouthIndia"
 }
+data "azurerm_client_config" "current" {
+}
 
+output "account_id" {
+  value = data.azurerm_client_config.current.client_id
+}
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"

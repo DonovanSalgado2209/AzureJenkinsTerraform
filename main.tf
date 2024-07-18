@@ -86,6 +86,26 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     admin_password                   = "Donovansalazar22"
     disable_password_authentication  = false
   }
+
+resource "azuread_user" "example" {
+  display_name        = "kavyaJDoe"
+  password            = "notSecure123"
+  user_principal_name = "xxx.onmicrosoft.com"
+}
+
+
+resource "azuread_group" "example" {
+  display_name     = "kavyaMyGroup"
+  owners           = [data.azuread_client_config.current.object_id]
+  security_enabled = true
+
+  members = [
+    azuread_user.example.object_id,
+    # more users 
+   ]
+}
+
+
 resource "azuread_group" "this"{
   count = length(var.ad_groups)
   display_name =  var.ad_groups[count.index].display_name

@@ -3,26 +3,6 @@ resource "azurerm_resource_group" "myterraformgroup" {
   location = "SouthIndia"
 }
 
-data "azurerm_client_config" "current" {
- }
-
- resource "azurerm_role_definition" "role_assignment_write_delete" {
-     name  = "RBAC Owner"
-     scope = data.azurerm_client_config.current.subscription_id
-     description = "Management of role assignments"
-    
-     permissions {
-         actions = [
-             "Microsoft.Management/managementGroups/write",
-             "Microsoft.Management/managementGroups/delete",
-         ]
-         not_actions = []
-     }
-    
-     assignable_scopes = [
-         data.azurerm_client_config.current.subscription_id //or management group
-     ]
- }
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"

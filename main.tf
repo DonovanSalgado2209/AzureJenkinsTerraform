@@ -117,7 +117,7 @@ resource "azuread_group" "this"{
 
 resource "azurerm_role_assignment" "sp-tenant-global-admin-user-access-role-assignment" {
   count = length(var.ad_groups)
-  scope                ="/subscriptions/xxx/resourcegroups/myrg"     
+  scope                ="/subscriptions/bb133ad6-61e6-48e1-a542-19e60290f40e/resourcegroups/myrg"     
   role_definition_name = var.ad_groups[count.index].role
   principal_id         = azuread_group.this[count.index].object_id
 

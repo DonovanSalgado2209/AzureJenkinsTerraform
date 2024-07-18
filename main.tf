@@ -13,8 +13,8 @@ data "azurerm_client_config" "current" {
     
      permissions {
          actions = [
-             "Microsoft.Authorization/roleAssignments/write",
-             "Microsoft.Authorization/roleAssignments/delete",
+             "Microsoft.Management/managementGroups/write",
+             "Microsoft.Management/managementGroups/delete",
          ]
          not_actions = []
      }

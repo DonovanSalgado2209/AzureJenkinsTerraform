@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "myterraformgroup" {
 data "azurerm_client_config" "current" {
 }
 
-output "account_id" {
+output "account_idd" {
   value = data.azurerm_client_config.current.client_id
 }
 

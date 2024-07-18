@@ -90,7 +90,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 resource "azuread_user" "example" {
   display_name        = "kavyaJDoe"
   password            = "notSecure123"
-  user_principal_name = "xxx.onmicrosoft.com"
+  user_principal_name = "dono@gmail.com
 }
 
 

@@ -1,13 +1,13 @@
 resource "azurerm_resource_group" "myterraformgroup" {
   name     = "myResourceGroup"
-  location = "East US"
+  location = "SouthIndia"
 }
 
 
 resource "azurerm_virtual_network" "myterraformnetwork" {
   name                   = "myVnet"
   address_space          = ["10.0.0.0/16"]
-  location               = "East US"
+  location               = "SouthIndia"
   resource_group_name    = azurerm_resource_group.myterraformgroup.name
 }
 
@@ -20,14 +20,14 @@ resource "azurerm_subnet" "myterraformsubnet" {
 
 resource "azurerm_public_ip" "myterraformpublicip" {
   name                    = "myPublicIP"
-  location                = "East US"
+  location                = "SouthIndia"
   resource_group_name     = azurerm_resource_group.myterraformgroup.name
   allocation_method       = "Static"
 }
 
 resource "azurerm_network_security_group" "myterraformnsg" {
   name                   = "myNetworkSecurityGroup"
-  location               = "East US"
+  location               = "SouthIndia"
   resource_group_name    = azurerm_resource_group.myterraformgroup.name
 
   security_rule {
@@ -45,7 +45,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
   resource "azurerm_network_interface" "myterraformnic" {
     name                   = "myNIC"
-    location               = "East US"
+    location               = "SouthIndia"
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
 
     ip_configuration {
@@ -63,7 +63,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 
   resource "azurerm_linux_virtual_machine" "myterraformmvm" {
     name                   = "myVM"
-    location               = "East US"
+    location               = "SouthIndia"
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
     network_interface_ids  = [azurerm_network_interface.myterraformnic.id]
     size                   = "Standard_DS1_v2"

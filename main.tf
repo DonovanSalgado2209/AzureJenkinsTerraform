@@ -61,7 +61,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
   }
 
   resource "azurerm_linux_virtual_machine" "myterraformmvm" {
-    name                   = "myVM"
+    name                   = "DonoVM"
     location               = "eastus2"
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
     network_interface_ids  = [azurerm_network_interface.myterraformnic.id]
@@ -80,7 +80,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
       version   = "latest"
     }
 
-    computer_name                    = "DonosVirtualMachine"
+    computer_name                    = "DonoVM"
     admin_username                   = "donovis"
     admin_password                   = "Dono22"
     disable_password_authentication  = false

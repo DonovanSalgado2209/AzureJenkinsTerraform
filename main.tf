@@ -29,9 +29,9 @@ delegation {
 
 resource "azurerm_nginx_deployment" "myterraformnginx" {
   name                     = "example-nginx"
-  resource_group_name      = azurerm_resource_group.myterraformnginx.name
+  resource_group_name      = azurerm_resource_group.myterraformgroup.name
   sku                      = "publicpreview_Monthly_gmz7xq9ge3py"
-  location                 = azurerm_resource_group.myterraformnginx.location
+  location                 = azurerm_resource_group.myterraformgroup.location
   managed_resource_group   = "example"
   diagnose_support_enabled = true
 
@@ -43,8 +43,8 @@ resource "azurerm_nginx_deployment" "myterraformnginx" {
   }
 }
 
-resource "azurerm_nginx_configuration" "example" {
-  nginx_deployment_id = azurerm_nginx_deployment.example.id
+resource "azurerm_nginx_configuration" "myterraformnginx" {
+  nginx_deployment_id = azurerm_nginx_deployment.myterraformnginx.id
   root_file           = "/etc/nginx/nginx.conf"
 
   config_file {

@@ -81,8 +81,6 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     }
 
     computer_name                    = "DonoVM"
-    admin_username                   = "donovis"
-    admin_password                   = "Dono22"
     disable_password_authentication  = false
   }
 

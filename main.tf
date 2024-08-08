@@ -36,10 +36,10 @@ resource "azurerm_nginx_deployment" "myterraformnginx" {
   diagnose_support_enabled = true
 
   frontend_public {
-    ip_address = [azurerm_public_ip.myterraformnginx.id]
+    ip_address = [azurerm_public_ip.myterraformpublicip.id]
   }
   network_interface {
-    subnet_id = azurerm_subnet.myterraformnginx.id
+    subnet_id = azurerm_subnet.myterraformsubnet.id
   }
 }
 

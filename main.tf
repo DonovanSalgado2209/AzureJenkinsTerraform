@@ -15,7 +15,74 @@ resource "azurerm_subnet" "myterraformsubnet" {
   resource_group_name     = azurerm_resource_group.myterraformgroup.name
   virtual_network_name    = azurerm_virtual_network.myterraformnetwork.name
   address_prefixes        = ["10.0.1.0/24"]
+delegation {
+    name = "delegation"
+
+    service_delegation {
+      name = "NGINX.NGINXPLUS/nginxDeployments"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
 }
+
+resource "azurerm_nginx_deployment" "example" {
+  name                     = "example-nginx"
+  resource_group_name      = azurerm_resource_group.example.name
+  sku                      = "publicpreview_Monthly_gmz7xq9ge3py"
+  location                 = azurerm_resource_group.example.location
+  managed_resource_group   = "example"
+  diagnose_support_enabled = true
+
+  frontend_public {
+    ip_address = [azurerm_public_ip.example.id]
+  }
+  network_interface {
+    subnet_id = azurerm_subnet.example.id
+  }
+}
+
+resource "azurerm_nginx_configuration" "example" {
+  nginx_deployment_id = azurerm_nginx_deployment.example.id
+  root_file           = "/etc/nginx/nginx.conf"
+
+  config_file {
+    content = base64encode(<<-EOT
+http {
+    server {
+        listen 80;
+        location / {
+            default_type text/html;
+            return 200 '<!doctype html><html lang="en"><head></head><body>
+                <div>this one will be updated</div>
+                <div>at 10:38 am</div>
+            </body></html>';
+        }
+        include site/*.conf;
+    }
+}
+EOT
+    )
+    virtual_path = "/etc/nginx/nginx.conf"
+  }
+
+  config_file {
+    content = base64encode(<<-EOT
+location /bbb {
+ default_type text/html;
+ return 200 '<!doctype html><html lang="en"><head></head><body>
+  <div>this one will be updated</div>
+  <div>at 10:38 am</div>
+ </body></html>';
+}
+EOT
+    )
+    virtual_path = "/etc/nginx/site/b.conf"
+  }
+}
+
+
 
 resource "azurerm_public_ip" "myterraformpublicip" {
   name                    = "myPublicIP"
@@ -66,7 +133,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     resource_group_name    = azurerm_resource_group.myterraformgroup.name
     network_interface_ids  = [azurerm_network_interface.myterraformnic.id]
     size                   = "Standard_DS1_v2"
-    custom_data            = base64encode(file("scripts/init.sh"))
+    
     os_disk {
       name                 = "myOsDisk"
       caching              = "ReadWrite"

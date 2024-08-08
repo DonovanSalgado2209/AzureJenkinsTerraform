@@ -27,19 +27,19 @@ delegation {
   }
 }
 
-resource "azurerm_nginx_deployment" "example" {
+resource "azurerm_nginx_deployment" "myterraformnginx" {
   name                     = "example-nginx"
-  resource_group_name      = azurerm_resource_group.example.name
+  resource_group_name      = azurerm_resource_group.myterraformnginx.name
   sku                      = "publicpreview_Monthly_gmz7xq9ge3py"
-  location                 = azurerm_resource_group.example.location
+  location                 = azurerm_resource_group.myterraformnginx.location
   managed_resource_group   = "example"
   diagnose_support_enabled = true
 
   frontend_public {
-    ip_address = [azurerm_public_ip.example.id]
+    ip_address = [azurerm_public_ip.myterraformnginx.id]
   }
   network_interface {
-    subnet_id = azurerm_subnet.example.id
+    subnet_id = azurerm_subnet.myterraformnginx.id
   }
 }
 

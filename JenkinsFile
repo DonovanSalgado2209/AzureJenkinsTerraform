@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
+    }
+
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/DonovanSalgado2209/AzureJenkinsTerraform.git']])
+            }
+        }
+    
+   
+        stage('Terraform Init') {
+            steps {
+              sh 'terraform init'
+            }
+        }
+    
+     
+        stage('Terraform Plan') {
+            steps {
+                withCredentials([azureServicePrincipal(credentialsId:'IAC_AZURE_SECRET' ,subscriptionIdVariable: 'SUBS_ID' ,clientIdVariable: 'CLIENT_ID' ,clientSecretVariable: 'CLIENT_SECRET' ,tenantIdVariable: 'TENANT_ID')])
+		        {
+		        sh "terraform plan -var 'subscription_id=$SUBS_ID' -var 'tenant_id=$TENANT_ID' -var 'client_id=$CLIENT_ID' -var 'client_secret=$CLIENT_SECRET'"
+		        }
+            }
+        }
+        
+        stage('Terraform Apply') {
+	    when {
+                expression { params.action == 'apply' }
+            }
+            steps {
+                withCredentials([azureServicePrincipal(credentialsId:'IAC_AZURE_SECRET' ,subscriptionIdVariable: 'SUBS_ID' ,clientIdVariable: 'CLIENT_ID' ,clientSecretVariable: 'CLIENT_SECRET' ,tenantIdVariable: 'TENANT_ID')])
+		        {
+		        sh "terraform apply -auto-approve -var 'subscription_id=$SUBS_ID' -var 'tenant_id=$TENANT_ID' -var 'client_id=$CLIENT_ID' -var 'client_secret=$CLIENT_SECRET'"
+		        }
+            }
+        }
+         stage('Terraform Destroy') {
+            when {
+                expression { params.action == 'destroy'}
+            }
+            steps {
+                withCredentials([azureServicePrincipal(credentialsId:'IAC_AZURE_SECRET' ,subscriptionIdVariable: 'SUBS_ID' ,clientIdVariable: 'CLIENT_ID' ,clientSecretVariable: 'CLIENT_SECRET' ,tenantIdVariable: 'TENANT_ID')])
+		        {
+		        sh "terraform destroy -auto-approve -var 'subscription_id=$SUBS_ID' -var 'tenant_id=$TENANT_ID' -var 'client_id=$CLIENT_ID' -var 'client_secret=$CLIENT_SECRET'"
+		        }
+            }
+        }
+    }
+}
+
+
